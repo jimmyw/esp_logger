@@ -11,7 +11,7 @@ struct log_entry_s {
     uint16_t uptime;
     uint64_t timestamp;
     char task[configMAX_TASK_NAME_LEN];
-    const char *tag;
+    char tag[CONFIG_LOGGER_LOG_MAX_TAG_SIZE];
     size_t data_len;
     char data[CONFIG_LOGGER_LOG_MAX_LOG_LINE_SIZE];
 };

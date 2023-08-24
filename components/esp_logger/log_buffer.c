@@ -97,7 +97,7 @@ bool log_pull_entry(struct log_entry_s *entry)
     entry->core = header.core;
     entry->level = header.level;
     strncpy(entry->task, header.task, sizeof(entry->task));
-    entry->tag = header.tag;
+    strncpy(entry->tag, header.tag, sizeof(entry->tag));
     entry->timestamp = header.timestamp;
     entry->data_len = header.data_len;
 
@@ -140,7 +140,7 @@ bool log_peek_entry(struct log_entry_s *entry, uint32_t *index)
             entry->core = header.core;
             entry->level = header.level;
             strcpy(entry->task, header.task);
-            entry->tag = header.tag;
+            strcpy(entry->tag, header.tag);
             entry->timestamp = header.timestamp;
             entry->data_len = header.data_len;
 

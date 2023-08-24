@@ -7,4 +7,7 @@ menu "Logger Config"
     config LOGGER_LOG_MAX_LOG_LINE_SIZE
         int "Max log line length size"
         default 128
+    config LOGGER_LOG_MAX_TAG_SIZE
+        int "Max log tag size"
+        default 24
 endmenu

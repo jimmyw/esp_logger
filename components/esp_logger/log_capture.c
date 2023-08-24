@@ -92,7 +92,7 @@ static int vprintf_handler(const char *fmt, va_list args)
     if (fmt[0] && strncmp(fmt + 1, " (%lu) %s: ", 11) == 0) {
         e->level = log_level_from_char(fmt[0]);
         e->uptime = va_arg(args, long unsigned);
-        e->tag = va_arg(args, char *);
+        strncpy(e->tag, va_arg(args, char *), sizeof(e->tag));
         e->data_len = 0;
         fmt += 12;
     }
@@ -100,13 +100,13 @@ static int vprintf_handler(const char *fmt, va_list args)
     else if (strncmp(fmt, "%c (%lu) %s:", 12) == 0) {
         e->level = log_level_from_char(va_arg(args, int));
         e->uptime = va_arg(args, long unsigned);
-        e->tag = va_arg(args, char *);
+        strncpy(e->tag, va_arg(args, char *), sizeof(e->tag));
         e->data_len = 0;
         fmt += 12;
     } else if (strncmp(fmt, "%c (%d) %s:", 11) == 0) {
         e->level = log_level_from_char(va_arg(args, int));
         e->uptime = va_arg(args, uint32_t);
-        e->tag = va_arg(args, char *);
+        strncpy(e->tag, va_arg(args, char *), sizeof(e->tag));
         e->data_len = 0;
         fmt += 11;
     }
