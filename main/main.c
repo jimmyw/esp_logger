@@ -26,6 +26,7 @@
 #include "log_print.h"
 #include "log_syslog_client.h"
 #include "log_stream_client.h"
+#include "log_stream_server.h"
 #include "log_test.h"
 
 
@@ -106,9 +107,12 @@ void app_main(void)
     //ESP_ERROR_CHECK(log_syslog_client_init(&syslog_client_config));
 
     logstream_client_config_t logstream_client_config = LOGSTREAM_CLIENT_DEFAULTS;
-    logstream_client_config.host = "192.168.2.133";
+    logstream_client_config.host = "192.168.2.169";
     ESP_ERROR_CHECK(logstream_client_init(&logstream_client_config));
 
+
+    //logstream_server_config_t logstream_server_config = LOGSTREAM_SERVER_DEFAULTS;
+    //ESP_ERROR_CHECK(logstream_server_init(&logstream_server_config));
 
 
     /* Register commands */

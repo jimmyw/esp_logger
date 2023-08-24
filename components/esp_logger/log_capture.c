@@ -14,8 +14,8 @@
 #include "freertos/semphr.h"
 #include "freertos/task.h"
 
-#include "log_common.h"
 #include "log_capture.h"
+#include "log_common.h"
 
 // Override original vprint handler, and prefix log line with thread name.
 static vprintf_like_t original_handler;
@@ -165,9 +165,7 @@ static int vprintf_handler(const char *fmt, va_list args)
                 }
             }
 
-            for (size_t i = 0; i < MAX_LOG_HANDLERS; i++)
-                if (handlers[i] != NULL)
-                    handlers[i](e);
+            log_capture_send_log(e);
             e->data_len = 0;
         }
     } else {
@@ -187,6 +185,13 @@ static int vprintf_handler(const char *fmt, va_list args)
         }
     }
     return ret;
+}
+
+void log_capture_send_log(log_entry_t *log_entry)
+{
+    for (size_t i = 0; i < MAX_LOG_HANDLERS; i++)
+        if (handlers[i] != NULL)
+            handlers[i](log_entry);
 }
 
 esp_err_t log_capture_early_init()

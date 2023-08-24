@@ -22,6 +22,7 @@ extern const char *log_level_names[6];
 typedef void log_entry_cb_t(log_entry_t *e);
 esp_err_t log_capture_early_init(void);
 esp_err_t log_capture_register_handler(log_entry_cb_t cb);
+void log_capture_send_log(log_entry_t * log_entry);
 
 int log_array(esp_log_level_t log_level, const char *tag, const char *prefix, const uint8_t *data, size_t data_size);
 int log_string(esp_log_level_t log_level, const char *tag, const char *prefix, const char *data, size_t data_size);

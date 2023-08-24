@@ -6,6 +6,7 @@ idf_component_register(
         log_test.c
         log_syslog_client.c
         log_stream_client.c
+        log_stream_server.c
     INCLUDE_DIRS
         .
     REQUIRES
