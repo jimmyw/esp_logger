@@ -23,6 +23,7 @@
 #include "log_buffer.h"
 #include "log_capture.h"
 #include "log_print.h"
+#include "log_test.h"
 
 
 static const char* TAG = "example";
@@ -81,6 +82,7 @@ void app_main(void)
 
     // Run asap, requires nvs to read log params.
     ESP_ERROR_CHECK(log_buffer_init());
+    ESP_ERROR_CHECK(log_test_init());
 
 
 #if CONFIG_CONSOLE_STORE_HISTORY

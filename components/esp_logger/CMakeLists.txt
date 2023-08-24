@@ -3,6 +3,7 @@ idf_component_register(
         log_capture.c
         log_buffer.c
         log_print.c
+        log_test.c
     INCLUDE_DIRS
         .
     REQUIRES
