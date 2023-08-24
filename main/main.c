@@ -20,6 +20,11 @@
 #include "cmd_wifi.h"
 #include "cmd_nvs.h"
 
+#include "log_buffer.h"
+#include "log_capture.h"
+#include "log_print.h"
+
+
 static const char* TAG = "example";
 #define PROMPT_STR CONFIG_IDF_TARGET
 
@@ -59,6 +64,11 @@ static void initialize_nvs(void)
 
 void app_main(void)
 {
+
+    ESP_ERROR_CHECK(log_capture_init());
+    ESP_ERROR_CHECK(log_buffer_erly_init());
+    ESP_ERROR_CHECK(log_print_init());
+
     esp_console_repl_t *repl = NULL;
     esp_console_repl_config_t repl_config = ESP_CONSOLE_REPL_CONFIG_DEFAULT();
     /* Prompt to be printed before each line.
@@ -68,6 +78,10 @@ void app_main(void)
     repl_config.max_cmdline_length = CONFIG_CONSOLE_MAX_COMMAND_LINE_LENGTH;
 
     initialize_nvs();
+
+    // Run asap, requires nvs to read log params.
+    ESP_ERROR_CHECK(log_buffer_init());
+
 
 #if CONFIG_CONSOLE_STORE_HISTORY
     initialize_filesystem();
