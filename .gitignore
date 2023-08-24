@@ -1,0 +1,6 @@
+build
+*.log
+*.old
+.vscode*
+*.lock
+.cache
