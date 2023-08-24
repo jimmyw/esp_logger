@@ -189,7 +189,7 @@ static int vprintf_handler(const char *fmt, va_list args)
     return ret;
 }
 
-esp_err_t log_capture_init()
+esp_err_t log_capture_early_init()
 {
     original_handler = esp_log_set_vprintf(vprintf_handler);
     return ESP_OK;

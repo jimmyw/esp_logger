@@ -66,9 +66,10 @@ static void initialize_nvs(void)
 void app_main(void)
 {
 
-    ESP_ERROR_CHECK(log_capture_init());
-    ESP_ERROR_CHECK(log_buffer_erly_init());
-    ESP_ERROR_CHECK(log_print_init());
+    // These need to be initlized in this order to work, and before anything else is run.
+    ESP_ERROR_CHECK(log_capture_early_init());
+    ESP_ERROR_CHECK(log_buffer_early_init());
+    ESP_ERROR_CHECK(log_print_early_init());
 
     esp_console_repl_t *repl = NULL;
     esp_console_repl_config_t repl_config = ESP_CONSOLE_REPL_CONFIG_DEFAULT();
@@ -80,7 +81,7 @@ void app_main(void)
 
     initialize_nvs();
 
-    // Run asap, requires nvs to read log params.
+    // These are less critical initiazions that adds console commands.
     ESP_ERROR_CHECK(log_buffer_init());
     ESP_ERROR_CHECK(log_test_init());
 

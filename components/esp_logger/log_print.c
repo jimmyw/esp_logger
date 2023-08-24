@@ -79,7 +79,7 @@ static void print_log_stdout(struct log_entry_s *entry)
     // return print_log_entry(entry, stdout);
 }
 
-esp_err_t log_print_init(void)
+esp_err_t log_print_early_init(void)
 {
 
     xSemaphore = xSemaphoreCreateRecursiveMutexStatic(&xSemaphoreBuffer);

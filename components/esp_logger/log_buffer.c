@@ -243,7 +243,7 @@ static int cmd_dmesg(int argc, char **argv)
     return 0;
 }
 
-esp_err_t log_buffer_erly_init()
+esp_err_t log_buffer_early_init()
 {
     xSemaphore = xSemaphoreCreateBinaryStatic(&xSemaphoreBuffer);
     circ_init(&log_buf, log_data, sizeof(log_data));

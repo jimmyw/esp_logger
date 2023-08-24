@@ -18,7 +18,7 @@ struct log_entry_s {
 
 extern const char *log_level_names[6];
 typedef void log_entry_cb_t(struct log_entry_s *e);
-esp_err_t log_capture_init(void);
+esp_err_t log_capture_early_init(void);
 esp_err_t log_capture_register_handler(log_entry_cb_t cb);
 
 int log_array(esp_log_level_t log_level, const char *tag, const char *prefix, const uint8_t *data, size_t data_size);
