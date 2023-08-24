@@ -1,0 +1,12 @@
+idf_component_register(
+    SRCS
+        log_capture.c
+        log_buffer.c
+        log_print.c
+    INCLUDE_DIRS
+        .
+    REQUIRES
+        console
+        circ_buf
+        nvs_flash
+)

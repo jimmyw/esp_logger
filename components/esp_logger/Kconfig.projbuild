@@ -1,0 +1,10 @@
+menu "Logger Config"
+
+    config LOGGER_LOG_BUFFER_SIZE
+        int "Log buffer ram size"
+        default 16384
+
+    config LOGGER_LOG_MAX_LOG_LINE_SIZE
+        int "Max log line length size"
+        default 128
+endmenu

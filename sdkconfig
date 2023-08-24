@@ -432,6 +432,13 @@ CONFIG_ESP_WIFI_AUTH_WPA2_PSK=y
 # end of Example Configuration
 
 #
+# Logger Config
+#
+CONFIG_LOGGER_LOG_BUFFER_SIZE=16384
+CONFIG_LOGGER_LOG_MAX_LOG_LINE_SIZE=128
+# end of Logger Config
+
+#
 # Compiler options
 #
 CONFIG_COMPILER_OPTIMIZATION_DEFAULT=y
