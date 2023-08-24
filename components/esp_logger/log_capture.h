@@ -13,7 +13,7 @@ struct log_entry_s {
     char task[configMAX_TASK_NAME_LEN];
     const char *tag;
     size_t data_len;
-    char data[256];
+    char data[CONFIG_LOGGER_LOG_MAX_LOG_LINE_SIZE];
 };
 
 typedef struct log_entry_s log_entry_t;
