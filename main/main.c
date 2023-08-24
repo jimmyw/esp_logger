@@ -25,6 +25,7 @@
 #include "log_capture.h"
 #include "log_print.h"
 #include "log_syslog_client.h"
+#include "log_stream_client.h"
 #include "log_test.h"
 
 
@@ -99,9 +100,14 @@ void app_main(void)
 
     // Log to a remote server
     ESP_ERROR_CHECK(esp_netif_init());
-    log_syslog_client_config_t syslog_client_config = SYSLOG_CLIENT_DEFAULTS;
-    syslog_client_config.host = "192.168.2.133";
-    ESP_ERROR_CHECK(log_syslog_client_init(&syslog_client_config));
+
+    //log_syslog_client_config_t syslog_client_config = SYSLOG_CLIENT_DEFAULTS;
+    //syslog_client_config.host = "192.168.2.133";
+    //ESP_ERROR_CHECK(log_syslog_client_init(&syslog_client_config));
+
+    logstream_client_config_t logstream_client_config = LOGSTREAM_CLIENT_DEFAULTS;
+    logstream_client_config.host = "192.168.2.133";
+    ESP_ERROR_CHECK(logstream_client_init(&logstream_client_config));
 
 
 
