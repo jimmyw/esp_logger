@@ -14,6 +14,7 @@
 #include "esp_console.h"
 #include "esp_vfs_dev.h"
 #include "esp_vfs_fat.h"
+#include "esp_netif.h"
 #include "nvs.h"
 #include "nvs_flash.h"
 #include "cmd_system.h"
@@ -23,6 +24,7 @@
 #include "log_buffer.h"
 #include "log_capture.h"
 #include "log_print.h"
+#include "log_syslog_client.h"
 #include "log_test.h"
 
 
@@ -93,6 +95,15 @@ void app_main(void)
 #else
     ESP_LOGI(TAG, "Command history disabled");
 #endif
+
+
+    // Log to a remote server
+    ESP_ERROR_CHECK(esp_netif_init());
+    log_syslog_client_config_t syslog_client_config = SYSLOG_CLIENT_DEFAULTS;
+    syslog_client_config.host = "192.168.2.133";
+    ESP_ERROR_CHECK(log_syslog_client_init(&syslog_client_config));
+
+
 
     /* Register commands */
     esp_console_register_help_command();

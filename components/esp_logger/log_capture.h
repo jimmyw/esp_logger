@@ -16,8 +16,10 @@ struct log_entry_s {
     char data[256];
 };
 
+typedef struct log_entry_s log_entry_t;
+
 extern const char *log_level_names[6];
-typedef void log_entry_cb_t(struct log_entry_s *e);
+typedef void log_entry_cb_t(log_entry_t *e);
 esp_err_t log_capture_early_init(void);
 esp_err_t log_capture_register_handler(log_entry_cb_t cb);
 

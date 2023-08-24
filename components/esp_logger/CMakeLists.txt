@@ -4,10 +4,10 @@ idf_component_register(
         log_buffer.c
         log_print.c
         log_test.c
+        log_syslog_client.c
     INCLUDE_DIRS
         .
     REQUIRES
         console
         circ_buf
-        nvs_flash
 )
