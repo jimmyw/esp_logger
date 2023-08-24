@@ -40,11 +40,10 @@ static void logstream_server_task(void *pvParameters)
             ESP_LOGE(TAG, "Unable to create socket: errno %d", errno);
             break;
         }
-        ESP_LOGI(TAG, "Socket created");
 
         // Set timeout
         struct timeval timeout;
-        timeout.tv_sec = 10;
+        timeout.tv_sec = 3600;
         timeout.tv_usec = 0;
         setsockopt(sock, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof timeout);
 
@@ -52,28 +51,26 @@ static void logstream_server_task(void *pvParameters)
         if (err < 0) {
             ESP_LOGE(TAG, "Socket unable to bind: errno %d", errno);
         }
-        ESP_LOGI(TAG, "Socket bound, port %d", server_config.port);
 
         struct sockaddr_storage source_addr; // Large enough for both IPv4 or IPv6
         socklen_t socklen = sizeof(source_addr);
 
         while (1) {
-            ESP_LOGI(TAG, "Waiting for data");
 
             int len = recvfrom(sock, &log_stream_entry, sizeof(log_stream_entry), 0, (struct sockaddr *)&source_addr, &socklen);
 
             // Error occurred during receiving
             if (len < 0) {
-                ESP_LOGE(TAG, "recvfrom failed: errno %d", errno);
+                if (errno != 11)
+                    ESP_LOGE(TAG, "recvfrom failed: errno %d", errno);
                 break;
             }
             // Data received
             else if (len > offsetof(log_entry_t, data)) {
                 char addr_str[128];
                 inet_ntoa_r(((struct sockaddr_in *)&source_addr)->sin_addr, addr_str, sizeof(addr_str) - 1);
-                ESP_LOGI(TAG, "Received %d bytes from %s:", len, addr_str);
 
-                log_entry_t entry;
+                log_entry_t entry = {};
                 if (log_stream_entry.log_stream_version == 1) {
                     entry.core = log_stream_entry.core;
                     entry.level = log_stream_entry.level;
@@ -82,14 +79,15 @@ static void logstream_server_task(void *pvParameters)
                     entry.timestamp = log_stream_entry.timestamp;
                     entry.data_len = log_stream_entry.data_len;
                     memcpy(entry.data, log_stream_entry.data, log_stream_entry.data_len);
+                    log_capture_send_log(&entry);
+                } else {
+                    ESP_LOGE(TAG, "Wrong version %d", log_stream_entry.log_stream_version);
                 }
 
-                log_capture_send_log(&entry);
             }
         }
 
         if (sock != -1) {
-            ESP_LOGE(TAG, "Shutting down socket and restarting...");
             shutdown(sock, 0);
             close(sock);
         }
