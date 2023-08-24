@@ -34,10 +34,10 @@ static void send_logstream(log_entry_t *entry)
     memcpy(tx_entry.data, entry->data, tx_entry.data_len);
 
     int log_socket = socket(AF_INET, SOCK_DGRAM, IPPROTO_IP);
-    size_t packet_size = MIN(offsetof(log_entry_t, data) + tx_entry.data_len, MAX_PACKET_SIZE);
+    size_t packet_size = MIN(offsetof(log_stream_entry_t, data) + tx_entry.data_len, MAX_PACKET_SIZE);
 
     if (log_socket > 0)
-        sendto(log_socket, entry, packet_size, 0, (struct sockaddr *)&dest_addr, sizeof(dest_addr));
+        sendto(log_socket, &tx_entry, packet_size, 0, (struct sockaddr *)&dest_addr, sizeof(dest_addr));
     close(log_socket);
 }
 
