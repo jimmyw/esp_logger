@@ -13,6 +13,7 @@
 
 #include "log_capture.h"
 #include "log_common.h"
+#include "log_stream_common.h"
 #include "log_stream_server.h"
 #include "lwip/err.h"
 #include "lwip/sockets.h"
@@ -24,7 +25,7 @@ static const char *TAG = "logstream_server";
 
 static void logstream_server_task(void *pvParameters)
 {
-    log_entry_t rx_buffer;
+    log_stream_entry_t log_stream_entry;
     struct sockaddr_in6 dest_addr;
 
     while (1) {
@@ -59,7 +60,7 @@ static void logstream_server_task(void *pvParameters)
         while (1) {
             ESP_LOGI(TAG, "Waiting for data");
 
-            int len = recvfrom(sock, &rx_buffer, sizeof(rx_buffer), 0, (struct sockaddr *)&source_addr, &socklen);
+            int len = recvfrom(sock, &log_stream_entry, sizeof(log_stream_entry), 0, (struct sockaddr *)&source_addr, &socklen);
 
             // Error occurred during receiving
             if (len < 0) {
@@ -72,8 +73,18 @@ static void logstream_server_task(void *pvParameters)
                 inet_ntoa_r(((struct sockaddr_in *)&source_addr)->sin_addr, addr_str, sizeof(addr_str) - 1);
                 ESP_LOGI(TAG, "Received %d bytes from %s:", len, addr_str);
 
-                log_capture_send_log(&rx_buffer);
+                log_entry_t entry;
+                if (log_stream_entry.log_stream_version == 1) {
+                    entry.core = log_stream_entry.core;
+                    entry.level = log_stream_entry.level;
+                    strncpy(entry.task, log_stream_entry.task, sizeof(entry.task));
+                    strncpy(entry.tag, log_stream_entry.tag, sizeof(entry.tag));
+                    entry.timestamp = log_stream_entry.timestamp;
+                    entry.data_len = log_stream_entry.data_len;
+                    memcpy(entry.data, log_stream_entry.data, log_stream_entry.data_len);
+                }
 
+                log_capture_send_log(&entry);
             }
         }
 
