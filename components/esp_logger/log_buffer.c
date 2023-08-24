@@ -38,7 +38,7 @@ struct log_header_s {
     uint16_t data_len;
     uint64_t timestamp;
     char task[configMAX_TASK_NAME_LEN];
-    const char *tag;
+    char tag[CONFIG_LOGGER_LOG_MAX_TAG_SIZE];
 } __attribute__((packed));
 
 static void purge_entry()
@@ -57,10 +57,10 @@ static void log_buffer_push_entry(struct log_entry_s *e)
         .core = e->core,
         .level = e->level,
         .timestamp = e->timestamp,
-        .tag = e->tag,
         .data_len = e->data_len,
     };
     strncpy(header.task, e->task, sizeof(header.task));
+    strncpy(header.tag, e->tag, sizeof(header.tag));
     if (xSemaphoreTake(xSemaphore, portMAX_DELAY) != pdTRUE) {
         return;
     }
