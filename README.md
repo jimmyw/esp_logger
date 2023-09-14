@@ -24,8 +24,9 @@ This can be run to add commands:
     ESP_ERROR_CHECK(log_test_init());
 ```
 
-
+** NOTE **
 Make sure CONFIG_LOG_COLORS is NOT enabled in your sdk config, colors will be added anyway from our own printer.
+** NOTE **
 
 Use dmesg to print your old logs.
 

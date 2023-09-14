@@ -1,0 +1,3 @@
+
+# Make sure no colors are added to the logs. This saves flash space, and colors will be added later with the printer.
+CONFIG_LOG_COLORS=n
