@@ -1,0 +1,4 @@
+dependencies:
+  jimmyw/esp_logger:
+    version: "*"
+    override_path: '../../../'

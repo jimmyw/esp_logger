@@ -1,8 +1,14 @@
-# The following five lines of boilerplate have to be in your project's
-# CMakeLists in this exact order for cmake to work correctly
-cmake_minimum_required(VERSION 3.16)
-
-set(EXTRA_COMPONENT_DIRS $ENV{IDF_PATH}/examples/system/console/advanced/components)
-
-include($ENV{IDF_PATH}/tools/cmake/project.cmake)
-project(wifi_station)
+idf_component_register(
+    SRCS
+        log_capture.c
+        log_buffer.c
+        log_print.c
+        log_test.c
+        log_syslog_client.c
+        log_stream_client.c
+        log_stream_server.c
+    INCLUDE_DIRS
+        .
+    REQUIRES
+        console
+)
